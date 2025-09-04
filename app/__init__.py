@@ -13,4 +13,10 @@ def create_app():
     )
 
     app.register_blueprint(bp)
+
+    from .models import Base
+    from .db import engine
+    with app.app_context():
+        Base.metadata.create_all(bind=engine)
+
     return app

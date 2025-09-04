@@ -17,16 +17,6 @@ def allowed_file(filename: str) -> bool:
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTS
 
 
-@bp.record_once
-def init_db(setup_state):
-    # Create tables if not present
-    try:
-        from .db import engine
-        Base.metadata.create_all(bind=engine)
-    except Exception as e:
-        current_app.logger.error(f"Failed to initialize database: {e}")
-
-
 @bp.route("/")
 def index():
     return redirect(url_for("main.upload"))
@@ -52,19 +42,17 @@ def upload():
         path = os.path.join(upload_dir, f"{datetime.utcnow().strftime('%Y%m%dT%H%M%S')}_{filename}")
         f.save(path)
 
-
         # Transcribe → Formalize → Store
         try:
             raw_text, duration = transcribe_audio(path)
             formal = formalize_text(raw_text)
 
-
             with SessionLocal() as db:
                 entry = LogEntry(
-                filename=os.path.basename(path),
-                transcript_raw=raw_text,
-                transcript_formal=formal,
-                duration_sec=duration,
+                    filename=os.path.basename(path),
+                    transcript_raw=raw_text,
+                    transcript_formal=formal,
+                    duration_sec=duration,
                 )
                 db.add(entry)
                 db.commit()
@@ -75,8 +63,8 @@ def upload():
             flash(f"Processing failed: {e}", "error")
             return redirect(request.url)
 
-
     return render_template("upload.html")
+
 
 @bp.route("/logs")
 def logs():
@@ -84,11 +72,11 @@ def logs():
     page_size = 20
     offset = (page - 1) * page_size
 
-
     with SessionLocal() as db:
         stmt = select(LogEntry).order_by(desc(LogEntry.created_at)).offset(offset).limit(page_size)
         entries = db.execute(stmt).scalars().all()
     return render_template("logs.html", entries=entries, page=page, page_size=page_size)
+
 
 @bp.route("/uploads/<path:fname>")
 def uploaded_file(fname):
