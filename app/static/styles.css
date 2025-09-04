@@ -1,0 +1,80 @@
+body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    margin: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+header nav a {
+    margin-left: 1rem;
+    text-decoration: none;
+}
+
+main {
+    padding: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.flashes {
+    list-style: none;
+    padding: 0;
+}
+
+.flashes li {
+    padding: .5rem .75rem;
+    margin: .5rem 0;
+    border-radius: .5rem;
+}
+
+.flashes li.success {
+    background: #ecfdf5;
+    color: #064e3b;
+}
+
+.flashes li.error {
+    background: #fee2e2;
+    color: #7f1d1d;
+}
+
+.logs {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.logs th, .logs td {
+    border-bottom: 1px solid #eee;
+    padding: .5rem;
+    vertical-align: top;
+}
+
+.logs td.formal {
+    width: 40%;
+}
+
+.logs td.raw {
+    width: 40%;
+    color: #4b5563;
+}
+
+.pager {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.hint {
+    color: #6b7280;
+}

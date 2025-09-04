@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Logs</h2>
+{% if entries %}
+<table class="logs">
+    <thead>
+    <tr>
+        <th>Time (UTC)</th>
+        <th>Formalized entry</th>
+        <th>Raw transcript</th>
+        <th>Audio</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for e in entries %}
+    <tr>
+        <td>{{ e.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td class="formal">{{ e.transcript_formal }}</td>
+        <td class="raw">{{ e.transcript_raw }}</td>
+        <td><a href="/uploads/{{ e.filename }}">file</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<div class="pager">
+    {% if page > 1 %}
+    <a href="/logs?page={{ page - 1 }}">← Prev</a>
+    {% endif %}
+    <span>Page {{ page }}</span>
+    {% if entries|length == page_size %}
+    <a href="/logs?page={{ page + 1 }}">Next →</a>
+    {% endif %}
+</div>
+{% else %}
+<p>No entries yet. <a href="/upload">Upload one</a>.</p>
+{% endif %}
+{% endblock %}
